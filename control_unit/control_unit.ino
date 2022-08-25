@@ -1,0 +1,99 @@
+//Clock Input Pin
+#define CLOCK_INPUT 0
+//Main Control Unit Pins
+//Input
+#define CONTROL_UNIT_INPUT_OPCODE_0 1
+#define CONTROL_UNIT_INPUT_OPCODE_1 2
+#define CONTROL_UNIT_INPUT_OPCODE_2 3
+#define CONTROL_UNIT_INPUT_OPCODE_3 4
+//Output
+#define CONTROL_UNIT_OUTPUT_REGDST 5
+#define CONTROL_UNIT_OUTPUT_BRANCH 6
+#define CONTROL_UNIT_OUTPUT_MEMREAD 7
+#define CONTROL_UNIT_OUTPUT_MEMTOREG 8
+#define CONTROL_UNIT_OUTPUT_ALUOP_0 9
+#define CONTROL_UNIT_OUTPUT_ALUOP_1 10
+#define CONTROL_UNIT_OUTPUT_ALUOP_2 11
+#define CONTROL_UNIT_OUTPUT_MEMWRITE 12
+#define CONTROL_UNIT_OUTPUT_ALUSRC 13
+#define CONTROL_UNIT_OUTPUT_REGWRITE 14
+#define CONTROL_UNIT_OUTPUT_BEQ 15
+#define CONTROL_UNIT_OUTPUT_JUMP 16
+
+
+
+//Main Control Unit Mapping
+int opcodeMap[16][12]={
+  {1,0,0,0,1,1,0,0,0,1,0,0},
+  {1,0,0,0,0,0,0,0,0,1,0,0},
+  {1,0,0,0,1,0,0,0,0,1,0,0},
+  {0,1,0,0,1,0,0,0,0,0,0,0},
+  {0,1,0,0,1,0,0,0,0,0,1,0},
+  {0,0,0,0,0,0,0,1,1,0,0,0},
+  {0,0,0,0,0,0,0,0,0,0,0,1},
+  {0,0,0,0,1,0,0,0,1,1,0,0},
+  {0,0,1,1,0,0,0,0,1,1,0,0},
+  {1,0,0,0,0,1,0,0,0,1,0,0},
+  {0,0,0,0,0,1,1,0,1,1,0,0},
+  {0,0,0,0,0,0,0,0,1,1,0,0},
+  {0,0,0,0,1,1,0,0,1,1,0,0},
+  {1,0,0,0,0,0,1,0,0,1,0,0},
+  {0,0,0,0,0,1,0,0,0,1,0,0},
+  {0,0,0,0,1,0,1,0,0,1,0,0}
+};
+//Main control output pins map
+int opCodeOutputPins[12]={
+  CONTROL_UNIT_OUTPUT_REGDST,
+  CONTROL_UNIT_OUTPUT_BRANCH,
+  CONTROL_UNIT_OUTPUT_MEMREAD,
+  CONTROL_UNIT_OUTPUT_MEMTOREG,
+  CONTROL_UNIT_OUTPUT_ALUOP_0,
+  CONTROL_UNIT_OUTPUT_ALUOP_1,
+  CONTROL_UNIT_OUTPUT_ALUOP_2,
+  CONTROL_UNIT_OUTPUT_MEMWRITE,
+  CONTROL_UNIT_OUTPUT_ALUSRC,
+  CONTROL_UNIT_OUTPUT_REGWRITE,
+  CONTROL_UNIT_OUTPUT_BEQ,
+  CONTROL_UNIT_OUTPUT_JUMP
+};
+//High-Low Map
+int highLowMap[2]={
+  LOW,
+  HIGH
+};
+
+
+void setup() {
+  //Clock Input Setup
+  pinMode(CLOCK_INPUT, INPUT);
+  //Main Control Unit Inputs
+  pinMode(CONTROL_UNIT_INPUT_OPCODE_0, INPUT);
+  pinMode(CONTROL_UNIT_INPUT_OPCODE_1, INPUT);
+  pinMode(CONTROL_UNIT_INPUT_OPCODE_2, INPUT);
+  pinMode(CONTROL_UNIT_INPUT_OPCODE_3, INPUT);
+  //Main Control Unit Outputs
+  pinMode(CONTROL_UNIT_OUTPUT_REGDST, OUTPUT);
+  pinMode(CONTROL_UNIT_OUTPUT_BRANCH, OUTPUT);
+  pinMode(CONTROL_UNIT_OUTPUT_MEMREAD, OUTPUT);
+  pinMode(CONTROL_UNIT_OUTPUT_MEMTOREG, OUTPUT);
+  pinMode(CONTROL_UNIT_OUTPUT_ALUOP_0, OUTPUT);
+  pinMode(CONTROL_UNIT_OUTPUT_ALUOP_1, OUTPUT);
+  pinMode(CONTROL_UNIT_OUTPUT_ALUOP_2, OUTPUT);
+  pinMode(CONTROL_UNIT_OUTPUT_MEMWRITE, OUTPUT);
+  pinMode(CONTROL_UNIT_OUTPUT_ALUSRC, OUTPUT);
+  pinMode(CONTROL_UNIT_OUTPUT_REGWRITE, OUTPUT);
+  pinMode(CONTROL_UNIT_OUTPUT_BEQ, OUTPUT);
+  pinMode(CONTROL_UNIT_OUTPUT_JUMP, OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  //Read Main Control Unit Input
+  int opCode_0=digitalRead(CONTROL_UNIT_INPUT_OPCODE_0);
+  int opCode_1=digitalRead(CONTROL_UNIT_INPUT_OPCODE_1);
+  int opCode_2=digitalRead(CONTROL_UNIT_INPUT_OPCODE_2);
+  int opCode_3=digitalRead(CONTROL_UNIT_INPUT_OPCODE_3);
+  int opCode=opCode_0+opCode_1*2+opCode_2*4+opCode_3*8;
+  for(int i=0;i<12;i++)
+    digitalWrite(opCodeOutputPins[i],highLowMap[opcodeMap[opCode][i]]);
+}
