@@ -21,6 +21,73 @@
 #define CONTROL_UNIT_OUTPUT_JUMP 16
 
 
+//Alu Control unit IO
+//Input
+#define ALU_CONTROL_UNIT_INPUT_A_0 17
+#define ALU_CONTROL_UNIT_INPUT_A_1 18
+#define ALU_CONTROL_UNIT_INPUT_A_2 19
+#define ALU_CONTROL_UNIT_INPUT_A_3 20
+#define ALU_CONTROL_UNIT_INPUT_B_0 21
+#define ALU_CONTROL_UNIT_INPUT_B_1 22
+#define ALU_CONTROL_UNIT_INPUT_B_2 23
+#define ALU_CONTROL_UNIT_INPUT_B_3 24
+#define ALU_CONTROL_UNIT_INPUT_ALUOP_0 25
+#define ALU_CONTROL_UNIT_INPUT_ALUOP_1 26
+#define ALU_CONTROL_UNIT_INPUT_ALUOP_2 27
+//Output
+#define ALU_CONTROL_UNIT_OUTPUT_0 28
+#define ALU_CONTROL_UNIT_OUTPUT_1 29
+#define ALU_CONTROL_UNIT_OUTPUT_2 30
+#define ALU_CONTROL_UNIT_OUTPUT_3 31
+#define ALU_CONTROL_UNIT_OUTPUT_OVERFLOW 32
+#define ALU_CONTROL_UNIT_OUTPUT_ZERO 33
+
+//Instruction memory output
+#define IM_OUTPUT_0 34
+#define IM_OUTPUT_1 35
+#define IM_OUTPUT_2 36
+#define IM_OUTPUT_3 37
+#define IM_OUTPUT_4 38
+#define IM_OUTPUT_5 39
+#define IM_OUTPUT_6 40
+#define IM_OUTPUT_7 41
+#define IM_OUTPUT_8 42
+#define IM_OUTPUT_9 43
+#define IM_OUTPUT_10 44
+#define IM_OUTPUT_11 45
+#define IM_OUTPUT_12 46
+#define IM_OUTPUT_13 47
+#define IM_OUTPUT_14 48
+#define IM_OUTPUT_15 49
+
+int imOutPins[16]={
+  IM_OUTPUT_0,
+  IM_OUTPUT_1,
+  IM_OUTPUT_2,
+  IM_OUTPUT_3,
+  IM_OUTPUT_4,
+  IM_OUTPUT_5,
+  IM_OUTPUT_6,
+  IM_OUTPUT_7,
+  IM_OUTPUT_8,
+  IM_OUTPUT_9,
+  IM_OUTPUT_10,
+  IM_OUTPUT_11,
+  IM_OUTPUT_12,
+  IM_OUTPUT_13,
+  IM_OUTPUT_14,
+  IM_OUTPUT_15
+};
+
+//define PC var
+int programCounter=5
+;
+
+//Instruction memory data
+int iMData[256]={3,0,0,0,0,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+
+
 
 //Main Control Unit Mapping
 int opcodeMap[16][12]={
@@ -84,6 +151,53 @@ void setup() {
   pinMode(CONTROL_UNIT_OUTPUT_REGWRITE, OUTPUT);
   pinMode(CONTROL_UNIT_OUTPUT_BEQ, OUTPUT);
   pinMode(CONTROL_UNIT_OUTPUT_JUMP, OUTPUT);
+  //ALU COntrol Unit Inputs
+  pinMode(ALU_CONTROL_UNIT_INPUT_A_0, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_A_1, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_A_2, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_A_3, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_B_0, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_B_1, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_B_2, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_B_3, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_ALUOP_0, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_ALUOP_1, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_ALUOP_2, INPUT);
+  //Outputs
+   pinMode(ALU_CONTROL_UNIT_OUTPUT_0, OUTPUT);
+   pinMode(ALU_CONTROL_UNIT_OUTPUT_1, OUTPUT);
+   pinMode(ALU_CONTROL_UNIT_OUTPUT_2, OUTPUT);
+   pinMode(ALU_CONTROL_UNIT_OUTPUT_3, OUTPUT);
+   pinMode(ALU_CONTROL_UNIT_OUTPUT_OVERFLOW, OUTPUT);
+   pinMode(ALU_CONTROL_UNIT_OUTPUT_ZERO, OUTPUT);
+
+   //Instruction Memory Output
+    pinMode(IM_OUTPUT_0, OUTPUT);
+    pinMode(IM_OUTPUT_1, OUTPUT);
+    pinMode(IM_OUTPUT_2, OUTPUT);
+    pinMode(IM_OUTPUT_3, OUTPUT);
+    pinMode(IM_OUTPUT_4, OUTPUT);
+    pinMode(IM_OUTPUT_5, OUTPUT);
+    pinMode(IM_OUTPUT_6, OUTPUT);
+    pinMode(IM_OUTPUT_7, OUTPUT);
+    pinMode(IM_OUTPUT_8, OUTPUT);
+    pinMode(IM_OUTPUT_9, OUTPUT);
+    pinMode(IM_OUTPUT_10, OUTPUT);
+    pinMode(IM_OUTPUT_11, OUTPUT);
+    pinMode(IM_OUTPUT_12, OUTPUT);
+    pinMode(IM_OUTPUT_13, OUTPUT);
+    pinMode(IM_OUTPUT_14, OUTPUT);
+    pinMode(IM_OUTPUT_15, OUTPUT);
+}
+
+int calculate4BitSignedBinary(int i0,int i1,int i2,int i3){
+  int number;
+  number=i0*1+i1*2+i2*4+i3*8;
+  if(i3==0){
+    return number;
+  }
+  number=16-number;
+  return -number;
 }
 
 void loop() {
@@ -96,4 +210,68 @@ void loop() {
   int opCode=opCode_0+opCode_1*2+opCode_2*4+opCode_3*8;
   for(int i=0;i<12;i++)
     digitalWrite(opCodeOutputPins[i],highLowMap[opcodeMap[opCode][i]]);
+
+  //Read ALU Control Unit Input
+  int aluInA0=digitalRead(ALU_CONTROL_UNIT_INPUT_A_0);
+  int aluInA1=digitalRead(ALU_CONTROL_UNIT_INPUT_A_1);
+  int aluInA2=digitalRead(ALU_CONTROL_UNIT_INPUT_A_2);
+  int aluInA3=digitalRead(ALU_CONTROL_UNIT_INPUT_A_3);
+  int aluInA=calculate4BitSignedBinary(aluInA0,aluInA1,aluInA2,aluInA3);
+
+  int aluInB0=digitalRead(ALU_CONTROL_UNIT_INPUT_B_0);
+  int aluInB1=digitalRead(ALU_CONTROL_UNIT_INPUT_B_1);
+  int aluInB2=digitalRead(ALU_CONTROL_UNIT_INPUT_B_2);
+  int aluInB3=digitalRead(ALU_CONTROL_UNIT_INPUT_B_3);
+  int aluInB=calculate4BitSignedBinary(aluInB0,aluInB1,aluInB2,aluInB3);
+
+  
+  int aluOp_0=digitalRead(ALU_CONTROL_UNIT_INPUT_ALUOP_0);
+  int aluOp_1=digitalRead(ALU_CONTROL_UNIT_INPUT_ALUOP_1);
+  int aluOp_2=digitalRead(ALU_CONTROL_UNIT_INPUT_ALUOP_2);
+  int aluOp=aluOp_0+aluOp_1*2+aluOp_2*4;
+
+  int aluResult;
+  switch(aluOp){
+    case 0:
+      aluResult=aluInA+aluInB;
+      break;
+    case 1:
+      aluResult=aluInA-aluInB;
+      break;
+    case 2:
+      aluResult=aluInA&aluInB;
+      break;
+    case 3:
+      aluResult=aluInA|aluInB;
+      break;
+    case 4:
+      aluResult=~(aluInA|aluInB);
+      break;
+    case 5:
+      aluResult=aluInA<<aluInB;
+      break;
+    case 6:
+      aluResult=aluInA>>aluInB;
+      break;
+    default:
+      aluResult=0;
+  }
+
+  digitalWrite(ALU_CONTROL_UNIT_OUTPUT_0,highLowMap[aluResult&1]);
+  digitalWrite(ALU_CONTROL_UNIT_OUTPUT_1,highLowMap[(aluResult&2)>>1]);
+  digitalWrite(ALU_CONTROL_UNIT_OUTPUT_2,highLowMap[(aluResult&4)>>2]);
+  digitalWrite(ALU_CONTROL_UNIT_OUTPUT_3,highLowMap[(aluResult&8)>>3]);
+  digitalWrite(ALU_CONTROL_UNIT_OUTPUT_ZERO,highLowMap[aluResult==0]);
+
+
+  //IM Output
+  int mask=1;
+  for(int i=0;i<16;i++){
+    digitalWrite(imOutPins[i],highLowMap[(iMData[programCounter]&mask)>>i]);
+    mask=mask<<1;
+  }
+  
+  
+ 
+  
 }
