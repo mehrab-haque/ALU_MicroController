@@ -59,6 +59,15 @@
 #define IM_OUTPUT_13 47
 #define IM_OUTPUT_14 48
 #define IM_OUTPUT_15 49
+//input
+#define IM_INPUT_PREVIEW_0 0
+#define IM_INPUT_PREVIEW_1 1
+#define IM_INPUT_PREVIEW_2 2
+#define IM_INPUT_PREVIEW_3 3
+#define IM_INPUT_PREVIEW_4 4
+#define IM_INPUT_PREVIEW_5 5
+#define IM_INPUT_PREVIEW_6 6
+#define IM_INPUT_PREVIEW_7 7
 
 int imOutPins[16]={
   IM_OUTPUT_0,
@@ -77,6 +86,18 @@ int imOutPins[16]={
   IM_OUTPUT_13,
   IM_OUTPUT_14,
   IM_OUTPUT_15
+};
+
+
+int imInPins[8]={
+  IM_INPUT_PREVIEW_0,
+  IM_INPUT_PREVIEW_1,
+  IM_INPUT_PREVIEW_2,
+  IM_INPUT_PREVIEW_3,
+  IM_INPUT_PREVIEW_4,
+  IM_INPUT_PREVIEW_5,
+  IM_INPUT_PREVIEW_6,
+  IM_INPUT_PREVIEW_7
 };
 
 //define PC var
@@ -128,7 +149,13 @@ int highLowMap[2]={
   LOW,
   HIGH
 };
+//Analog High Low Map
+int analogHighLowMap[2]={
+  0,
+  1023
+};
 
+bool isClockPressed=false;
 
 void setup() {
   //Clock Input Setup
@@ -201,7 +228,32 @@ int calculate4BitSignedBinary(int i0,int i1,int i2,int i3){
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  int isClockPulse = digitalRead(CLOCK_INPUT);
+  if(isClockPulse && !isClockPressed){
+    programCounter++;
+    isClockPressed=true;
+  }
+  else if(!isClockPulse)
+    isClockPressed=false;
+
+  if(programCounter>255)
+    programCounter=0;
+
+
+  //IM Input Preview
+  int mask=1;
+  for(int i=0;i<8;i++){
+    analogWrite(imInPins[i], analogHighLowMap[(programCounter&mask)>>i]);
+    mask=mask<<1;
+  }
+
+  //IM Output
+  mask=1;
+  for(int i=0;i<16;i++){
+    digitalWrite(imOutPins[i],highLowMap[(iMData[programCounter]&mask)>>i]);
+    mask=mask<<1;
+  }
+  
   //Read Main Control Unit Input
   int opCode_0=digitalRead(CONTROL_UNIT_INPUT_OPCODE_0);
   int opCode_1=digitalRead(CONTROL_UNIT_INPUT_OPCODE_1);
@@ -261,17 +313,6 @@ void loop() {
   digitalWrite(ALU_CONTROL_UNIT_OUTPUT_1,highLowMap[(aluResult&2)>>1]);
   digitalWrite(ALU_CONTROL_UNIT_OUTPUT_2,highLowMap[(aluResult&4)>>2]);
   digitalWrite(ALU_CONTROL_UNIT_OUTPUT_3,highLowMap[(aluResult&8)>>3]);
-  digitalWrite(ALU_CONTROL_UNIT_OUTPUT_ZERO,highLowMap[aluResult==0]);
-
-
-  //IM Output
-  int mask=1;
-  for(int i=0;i<16;i++){
-    digitalWrite(imOutPins[i],highLowMap[(iMData[programCounter]&mask)>>i]);
-    mask=mask<<1;
-  }
-  
-  
- 
+  digitalWrite(ALU_CONTROL_UNIT_OUTPUT_ZERO,highLowMap[aluResult==0]); 
   
 }
