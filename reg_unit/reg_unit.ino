@@ -22,6 +22,38 @@
 #define DATA_MEMORY_OUTPUT_2 18
 #define DATA_MEMORY_OUTPUT_3 19
 
+int dataMemory[256]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+int dataMemoryOutputPins[4]={
+  DATA_MEMORY_OUTPUT_0,
+  DATA_MEMORY_OUTPUT_1,
+  DATA_MEMORY_OUTPUT_2,
+  DATA_MEMORY_OUTPUT_3
+};
+
+int writeDelay=250;
+
+
+//High-Low Map
+int highLowMap[2]={
+  LOW,
+  HIGH
+};
+//Analog High Low Map
+int analogHighLowMap[2]={
+  0,
+  1023
+};
+
+int calculate4BitSignedBinary(int i0,int i1,int i2,int i3){
+  int number;
+  number=i0*1+i1*2+i2*4+i3*8;
+  if(i3==0){
+    return number;
+  }
+  number=16-number;
+  return -number;
+}
 
 void setup() {
   //Data memory inputs
@@ -49,6 +81,29 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  // Data Memory Operations
+  int isReadMode=digitalRead(DATA_MEMORY_INPUT_MEMREAD);
+  int isWriteMode=digitalRead(DATA_MEMORY_INPUT_MEMWRITE);
+  int isClearMode=digitalRead(DATA_MEMORY_INPUT_CLR);
 
+  if(isReadMode){
+    int address=DATA_MEMORY_INPUT_ADDRESS_0+DATA_MEMORY_INPUT_ADDRESS_1*2+DATA_MEMORY_INPUT_ADDRESS_2*4+DATA_MEMORY_INPUT_ADDRESS_3*8+DATA_MEMORY_INPUT_ADDRESS_4*16+DATA_MEMORY_INPUT_ADDRESS_5*32+DATA_MEMORY_INPUT_ADDRESS_6*64+DATA_MEMORY_INPUT_ADDRESS_7*128;
+    int data=dataMemory[address];
+    int mask=1;
+    for(int i=0;i<4;i++){
+      digitalWrite(dataMemoryOutputPins[i],highLowMap[(data&mask)>>i]);
+      mask=mask<<1;
+    }
+  }
+  else if(isWriteMode){
+    delay(writeDelay);
+    int address=DATA_MEMORY_INPUT_ADDRESS_0+DATA_MEMORY_INPUT_ADDRESS_1*2+DATA_MEMORY_INPUT_ADDRESS_2*4+DATA_MEMORY_INPUT_ADDRESS_3*8+DATA_MEMORY_INPUT_ADDRESS_4*16+DATA_MEMORY_INPUT_ADDRESS_5*32+DATA_MEMORY_INPUT_ADDRESS_6*64+DATA_MEMORY_INPUT_ADDRESS_7*128;
+    int data=calculate4BitSignedBinary(DATA_MEMORY_INPUT_WRITE_DATA_0,DATA_MEMORY_INPUT_WRITE_DATA_1,DATA_MEMORY_INPUT_WRITE_DATA_2,DATA_MEMORY_INPUT_WRITE_DATA_3);
+    dataMemory[address]=data;
+  }
+  else if(isClearMode){
+    for(int i=0;i<256;i++)
+      dataMemory[i]=0;
+  }
+  
 }

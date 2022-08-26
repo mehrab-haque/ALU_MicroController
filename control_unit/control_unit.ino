@@ -155,6 +155,17 @@ int analogHighLowMap[2]={
   1023
 };
 
+
+int calculate4BitSignedBinary(int i0,int i1,int i2,int i3){
+  int number;
+  number=i0*1+i1*2+i2*4+i3*8;
+  if(i3==0){
+    return number;
+  }
+  number=16-number;
+  return -number;
+}
+
 bool isClockPressed=false;
 
 void setup() {
@@ -215,16 +226,6 @@ void setup() {
     pinMode(IM_OUTPUT_13, OUTPUT);
     pinMode(IM_OUTPUT_14, OUTPUT);
     pinMode(IM_OUTPUT_15, OUTPUT);
-}
-
-int calculate4BitSignedBinary(int i0,int i1,int i2,int i3){
-  int number;
-  number=i0*1+i1*2+i2*4+i3*8;
-  if(i3==0){
-    return number;
-  }
-  number=16-number;
-  return -number;
 }
 
 void loop() {
