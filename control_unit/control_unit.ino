@@ -209,23 +209,23 @@ void setup() {
    pinMode(ALU_CONTROL_UNIT_OUTPUT_OVERFLOW, OUTPUT);
    pinMode(ALU_CONTROL_UNIT_OUTPUT_ZERO, OUTPUT);
 
-   //Instruction Memory Output
-    pinMode(IM_OUTPUT_0, OUTPUT);
-    pinMode(IM_OUTPUT_1, OUTPUT);
-    pinMode(IM_OUTPUT_2, OUTPUT);
-    pinMode(IM_OUTPUT_3, OUTPUT);
-    pinMode(IM_OUTPUT_4, OUTPUT);
-    pinMode(IM_OUTPUT_5, OUTPUT);
-    pinMode(IM_OUTPUT_6, OUTPUT);
-    pinMode(IM_OUTPUT_7, OUTPUT);
-    pinMode(IM_OUTPUT_8, OUTPUT);
-    pinMode(IM_OUTPUT_9, OUTPUT);
-    pinMode(IM_OUTPUT_10, OUTPUT);
-    pinMode(IM_OUTPUT_11, OUTPUT);
-    pinMode(IM_OUTPUT_12, OUTPUT);
-    pinMode(IM_OUTPUT_13, OUTPUT);
-    pinMode(IM_OUTPUT_14, OUTPUT);
-    pinMode(IM_OUTPUT_15, OUTPUT);
+ //Instruction Memory Output
+  pinMode(IM_OUTPUT_0, OUTPUT);
+  pinMode(IM_OUTPUT_1, OUTPUT);
+  pinMode(IM_OUTPUT_2, OUTPUT);
+  pinMode(IM_OUTPUT_3, OUTPUT);
+  pinMode(IM_OUTPUT_4, OUTPUT);
+  pinMode(IM_OUTPUT_5, OUTPUT);
+  pinMode(IM_OUTPUT_6, OUTPUT);
+  pinMode(IM_OUTPUT_7, OUTPUT);
+  pinMode(IM_OUTPUT_8, OUTPUT);
+  pinMode(IM_OUTPUT_9, OUTPUT);
+  pinMode(IM_OUTPUT_10, OUTPUT);
+  pinMode(IM_OUTPUT_11, OUTPUT);
+  pinMode(IM_OUTPUT_12, OUTPUT);
+  pinMode(IM_OUTPUT_13, OUTPUT);
+  pinMode(IM_OUTPUT_14, OUTPUT);
+  pinMode(IM_OUTPUT_15, OUTPUT);
 }
 
 void loop() {
