@@ -29,12 +29,13 @@
 #define REG_OUTPUT_READ_A_1 40
 #define REG_OUTPUT_READ_A_2 41
 #define REG_OUTPUT_READ_A_3 42
-
+ 
 #define REG_OUTPUT_READ_B_0 43
 #define REG_OUTPUT_READ_B_1 44
 #define REG_OUTPUT_READ_B_2 45
 #define REG_OUTPUT_READ_B_3 46
-
+#define REG_OUTPUT_READ_B_DEBUG_2 8
+#define REG_OUTPUT_READ_B_DEBUG_3 9
 
 //Data Memory Inputs
 #define DATA_MEMORY_INPUT_ADDRESS_0 20
@@ -92,6 +93,10 @@ int regBOutputPins[4]={
   REG_OUTPUT_READ_B_3
 };
 
+int prevWriteStatus=false;
+
+int prevMemReadStatus=false;
+
 int writeDelay=250;
 
 
@@ -147,6 +152,9 @@ void setup() {
   pinMode(REG_OUTPUT_READ_B_1, OUTPUT);
   pinMode(REG_OUTPUT_READ_B_2, OUTPUT);
   pinMode(REG_OUTPUT_READ_B_3, OUTPUT);
+  
+//  pinMode(REG_OUTPUT_READ_B_DEBUG_2, OUTPUT);
+//  pinMode(REG_OUTPUT_READ_B_DEBUG_3, OUTPUT);
 
 
   //Data memory inputs
@@ -172,23 +180,33 @@ void setup() {
 
 }
 
+
+void printRegisters(){
+  Serial.println("####Register Data####");
+  Serial.println("$t0="+String(regMem[8])+", "+"$t1="+String(regMem[9])+", "+"$t2="+String(regMem[10])+", "+"$t3="+String(regMem[11])+", "+"$t4="+String(regMem[12])+", "+"$sp="+String(regMem[13])+", "+"$zero="+String(regMem[15]));
+  Serial.println("####Register Data End####");
+}
+
 void loop() {
   //reg operations
   int isWriteMode=digitalRead(REG_INPUT_WRITE_EN);
   int isClearMode=digitalRead( REG_INPUT_CLR);
 
   //reg read
-  int readALoc=digitalRead(REG_INPUT_READ_A_0)+digitalRead(REG_INPUT_READ_A_1)*2+digitalRead(REG_INPUT_READ_A_2)*4+digitalRead(REG_INPUT_READ_A_3)*8;
   int readBLoc=digitalRead(REG_INPUT_READ_B_0)+digitalRead(REG_INPUT_READ_B_1)*2+digitalRead(REG_INPUT_READ_B_2)*4+digitalRead(REG_INPUT_READ_B_3)*8;
+  int readALoc=digitalRead(REG_INPUT_READ_A_0)+digitalRead(REG_INPUT_READ_A_1)*2+digitalRead(REG_INPUT_READ_A_2)*4+digitalRead(REG_INPUT_READ_A_3)*8;
+  
   int mask=1;
   
   for(int i=0;i<4;i++){
+     digitalWrite(regBOutputPins[i],highLowMap[(regMem[readBLoc]&mask)>>i]);
     digitalWrite(regAOutputPins[i],highLowMap[(regMem[readALoc]&mask)>>i]);
-    digitalWrite(regBOutputPins[i],highLowMap[(regMem[readBLoc]&mask)>>i]);
+   
     mask=mask<<1;
   }
 
-  if(isWriteMode){
+  if(isWriteMode && prevWriteStatus!=isWriteMode){
+    prevWriteStatus=1;
     delay(writeDelay);
     int writeLoc=digitalRead(REG_INPUT_WRITE_REG_0)+digitalRead(REG_INPUT_WRITE_REG_1)*2+digitalRead(REG_INPUT_WRITE_REG_2)*4+digitalRead(REG_INPUT_WRITE_REG_3)*8;
     int writeData_0=analogRead(REG_INPUT_WRITE_DATA_0)>500?1:0;
@@ -196,22 +214,33 @@ void loop() {
     int writeData_2=analogRead(REG_INPUT_WRITE_DATA_2)>500?1:0;
     int writeData_3=analogRead(REG_INPUT_WRITE_DATA_3)>500?1:0;
     int writeData=calculate4BitSignedBinary(writeData_0,writeData_1,writeData_2,writeData_3);
+ 
     if(writeLoc==15)writeData=0;
     regMem[writeLoc]=writeData;
-    Serial.print("INSIDE WRITEMODE, add. " );
-    Serial.print(writeLoc);
-    Serial.print( " data ");
-    Serial.println(writeData);
-  }
-  else if(isClearMode){
+   
+
+    printRegisters();
+
+     
+
+ 
+
+    
+    }
+    else if(!isWriteMode){
+      prevWriteStatus=0;
+    }
+
+   
+ if(isClearMode){
     for(int i=0;i<16;i++)
       regMem[i]=0;
     regMem[13]=15;
   }
 
-  String out="";
-  for(int i=0;i<16;i++)
-    out+=String(regMem[i])+",";
+
+ 
+
 
   //Serial.println(out);
 
@@ -220,9 +249,41 @@ void loop() {
   isWriteMode=digitalRead(DATA_MEMORY_INPUT_MEMWRITE);
   isClearMode=digitalRead(DATA_MEMORY_INPUT_CLR);
 
-  if(isReadMode){
-    int address=digitalRead(DATA_MEMORY_INPUT_ADDRESS_0)+digitalRead(DATA_MEMORY_INPUT_ADDRESS_1)*2+digitalRead(DATA_MEMORY_INPUT_ADDRESS_2)*4+digitalRead(DATA_MEMORY_INPUT_ADDRESS_3)*8+digitalRead(DATA_MEMORY_INPUT_ADDRESS_4)*16+digitalRead(DATA_MEMORY_INPUT_ADDRESS_5)*32+digitalRead(DATA_MEMORY_INPUT_ADDRESS_6)*64+digitalRead(DATA_MEMORY_INPUT_ADDRESS_7)*128;
+  if(isReadMode && prevMemReadStatus!=isReadMode){
+    prevMemReadStatus=1;
+        int writeLoc=digitalRead(REG_INPUT_WRITE_REG_0)+digitalRead(REG_INPUT_WRITE_REG_1)*2+digitalRead(REG_INPUT_WRITE_REG_2)*4+digitalRead(REG_INPUT_WRITE_REG_3)*8;
+
+
+    int writeData_0=analogRead(REG_INPUT_WRITE_DATA_0)>500?1:0;
+    int writeData_1=analogRead(REG_INPUT_WRITE_DATA_1)>500?1:0;
+    int writeData_2=analogRead(REG_INPUT_WRITE_DATA_2)>500?1:0;
+    int writeData_3=analogRead(REG_INPUT_WRITE_DATA_3)>500?1:0;
+//    int address_0=digitalRead(DATA_MEMORY_INPUT_ADDRESS_0);
+//    int address_1=digitalRead(DATA_MEMORY_INPUT_ADDRESS_1);
+//    int address_2=digitalRead(DATA_MEMORY_INPUT_ADDRESS_2);
+//    int address_3=digitalRead(DATA_MEMORY_INPUT_ADDRESS_3);
+    int address=writeData_0+writeData_1*2+writeData_2*4+writeData_3*8+ writeData_3*16+writeData_3*32+writeData_3*64+writeData_3*128;
+
+
+    
     int data=dataMemory[address];
+
+
+
+    
+    
+ 
+    if(writeLoc==15)data=0;
+    regMem[writeLoc]=data;
+    Serial.print("INSIDE WRITEMODE of LW, add. " );
+    Serial.print(writeLoc);
+    Serial.print( " data ");
+    Serial.println(data);
+   // Serial.println(String(data_3)+String(data_2)+String(data_1)+String(data_0));
+
+     printRegisters();
+    
+    
     //Serial.println(data);
     //Serial.println(address);
     int mask=1;
@@ -231,7 +292,12 @@ void loop() {
       mask=mask<<1;
     }
   }
-  else if(isWriteMode){
+ else if(!isReadMode){
+      prevMemReadStatus=0;
+    }
+
+  
+  if(isWriteMode){
     delay(writeDelay);
     // sign extension to 8 bits
     int writeData_0=analogRead(REG_INPUT_WRITE_DATA_0)>500?1:0;
@@ -242,34 +308,24 @@ void loop() {
 //    int address_1=digitalRead(DATA_MEMORY_INPUT_ADDRESS_1);
 //    int address_2=digitalRead(DATA_MEMORY_INPUT_ADDRESS_2);
 //    int address_3=digitalRead(DATA_MEMORY_INPUT_ADDRESS_3);
-    int address=writeData_0+writeData_1*2+writeData_2*4+writeData_3*8;
-    String output=String(writeData_3)+String(writeData_2)+String(writeData_1)+String(writeData_0);
-    Serial.println(output);
-    Serial.println(address);
+    int address=writeData_0+writeData_1*2+writeData_2*4+writeData_3*8+ writeData_3*16+writeData_3*32+writeData_3*64+writeData_3*128;
+    
     writeData_0=analogRead(DATA_MEMORY_INPUT_WRITE_DATA_0)>500?1:0;
     writeData_1=analogRead(DATA_MEMORY_INPUT_WRITE_DATA_1)>500?1:0;
     writeData_2=analogRead(DATA_MEMORY_INPUT_WRITE_DATA_2)>500?1:0;
     writeData_3=analogRead(DATA_MEMORY_INPUT_WRITE_DATA_3)>500?1:0;
-    Serial.println("=====");
-    output=String(writeData_3)+String(writeData_2)+String(writeData_1)+String(writeData_0);
-    Serial.println(output);
     int data=calculate4BitSignedBinary(writeData_0,writeData_1,writeData_2,writeData_3);
-    Serial.println(data);
     dataMemory[address]=data;
+        Serial.println("Data memory write address: "+String(address)+", value: "+data);
+
   }
   else if(isClearMode){
     for(int i=0;i<256;i++)
       dataMemory[i]=0;
   }
 
-//
-//  String dataMemString="";
-//  for(int i=0;i<20;i++)
-//    dataMemString+=String(dataMemory[i])+",";
-//  Serial.println(dataMemString);
-//
-//  Serial.println();
-//  Serial.println();
+
+  
 
 
   
