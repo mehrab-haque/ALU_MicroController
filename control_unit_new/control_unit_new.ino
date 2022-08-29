@@ -9,7 +9,11 @@ int programCounter=-1;
 //unsigned int iMData[256]={0xbfc1,0xbfc2,0xbfc2,0xbf92,0xbfa4,0x59a3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 
-unsigned int iMData[256]={0xbfc1,0xbfb5,0x1bca,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+unsigned int iMData[256]={0xbf93,0x7fae,0x19a8,0x29ab,0xd8ac,0x5a93,0xaaa1,0x4ab1,0x61c0,0xfbb1,0x8aa4,0x5d90,0xbddf,0x5da0,0xbddf,0x6190,0x08a8,0xeca1,0xc995,0xbdd1,0x8da0,0x9ac9,0xbdd1,0x8d90,0x61c0,0x48a1,0x6100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+
+
 //Instruction memory output
 #define IM_OUTPUT_0 34
 #define IM_OUTPUT_1 35
@@ -253,6 +257,7 @@ void setup() {
 }
 
 void loop() {
+  
   int isClockPulse = digitalRead(CLOCK_INPUT);
   if(isClockPulse && !isClockPressed){
     delay(delayMs);
@@ -297,7 +302,7 @@ void loop() {
 
       
       for(int i=0;i<12;i++){
-        if(i!=CONTROL_UNIT_OUTPUT_MEMWRITE && i!=CONTROL_UNIT_OUTPUT_REGWRITE)digitalWrite(opCodeOutputPins[i],highLowMap[opcodeMap[opCode][i]]);
+        if(opCodeOutputPins[i]!=CONTROL_UNIT_OUTPUT_MEMWRITE && opCodeOutputPins[i]!=CONTROL_UNIT_OUTPUT_MEMREAD && opCodeOutputPins[i]!=CONTROL_UNIT_OUTPUT_REGWRITE)digitalWrite(opCodeOutputPins[i],highLowMap[opcodeMap[opCode][i]]);
         else digitalWrite(opCodeOutputPins[i],LOW);
       }
       delay(10);
@@ -336,10 +341,18 @@ void loop() {
           if(opCode==5 || opCode==7 || opCode==8 || opCode==10 || opCode==11 || opCode==12 || opCode==14 || opCode==15)
             aluInB=calculate4BitSignedBinary(iMData[programCounter]&1,((iMData[programCounter]>>1)&1),((iMData[programCounter]>>2)&1),((iMData[programCounter]>>3)&1));
           else{
-            int aluInB0=digitalRead(ALU_CONTROL_UNIT_INPUT_B_0);
-            int aluInB1=digitalRead(ALU_CONTROL_UNIT_INPUT_B_1);
-            int aluInB2=digitalRead(ALU_CONTROL_UNIT_INPUT_B_2);
-            int aluInB3=digitalRead(ALU_CONTROL_UNIT_INPUT_B_3);
+
+            digitalWrite(IM_OUTPUT_8,highLowMap[(iMData[programCounter]>>4)&1]);
+            digitalWrite(IM_OUTPUT_9,highLowMap[(iMData[programCounter]>>5)&1]);
+            digitalWrite(IM_OUTPUT_10,highLowMap[(iMData[programCounter]>>6)&1]);
+            digitalWrite(IM_OUTPUT_11,highLowMap[(iMData[programCounter]>>7)&1]);
+//            delay(1000);
+            delay(500);
+            int aluInB0=digitalRead(ALU_CONTROL_UNIT_INPUT_A_0);
+            int aluInB1=digitalRead(ALU_CONTROL_UNIT_INPUT_A_1);
+            int aluInB2=digitalRead(ALU_CONTROL_UNIT_INPUT_A_2);
+            int aluInB3=digitalRead(ALU_CONTROL_UNIT_INPUT_A_3);
+            Serial.println(String(aluInB3)+String(aluInB2)+String(aluInB1)+String(aluInB0));
             aluInB=calculate4BitSignedBinary(aluInB0,aluInB1,aluInB2,aluInB3);
           }
   
@@ -359,6 +372,7 @@ void loop() {
                 break;
               case 2:
                 aluResult=aluInA&aluInB;
+                
                 break;
               case 3:
                 aluResult=aluInA|aluInB;
@@ -375,33 +389,73 @@ void loop() {
               default:
                 aluResult=0;
             }
+          
+          aluResult=calculate4BitSignedBinary(aluResult&1,(aluResult>>1)&1,(aluResult>>2)&1,(aluResult>>3)&1);
+
+          if((opCode==4 && aluResult==0) || (opCode==3 && aluResult!=0)){
+               int relLoc=calculate4BitSignedBinary(iMData[programCounter]&1,((iMData[programCounter]>>1)&1),((iMData[programCounter]>>2)&1),((iMData[programCounter]>>3)&1));
+               programCounter+=relLoc+1;
+               programState++;
+               
+          }
+         
+          else if (opCode!=4 && opCode!=3){
+            Serial.println("ALU Input A : "+String(aluInA));
+          Serial.println("ALU Input B : "+String(aluInB));
+          Serial.println("ALU Result : "+String(aluResult));
+
           digitalWrite(ALU_CONTROL_UNIT_OUTPUT_0,highLowMap[aluResult&1]);
           digitalWrite(ALU_CONTROL_UNIT_OUTPUT_1,highLowMap[(aluResult&2)>>1]);
           digitalWrite(ALU_CONTROL_UNIT_OUTPUT_2,highLowMap[(aluResult&4)>>2]);
           digitalWrite(ALU_CONTROL_UNIT_OUTPUT_3,highLowMap[(aluResult&8)>>3]);
           digitalWrite(ALU_CONTROL_UNIT_OUTPUT_ZERO,highLowMap[aluResult==0]);
 
-         delay(200);
-         digitalWrite(CONTROL_UNIT_OUTPUT_REGWRITE,HIGH);
-         delay(200);
-         digitalWrite(CONTROL_UNIT_OUTPUT_REGWRITE,LOW);
-         digitalWrite(IMMEDIATE_OUTPUT,LOW);
+         delay(100);
+          if(opCode==5 || opCode==7 || opCode==8 || opCode==10 || opCode==11 || opCode==12 || opCode==14 || opCode==15)
+            digitalWrite(IMMEDIATE_OUTPUT,HIGH);
+         delay(2000);
+         if(opCode!=5 && opCode!=8){
+          
+          digitalWrite(CONTROL_UNIT_OUTPUT_REGWRITE,HIGH);
+           delay(1000);
+           digitalWrite(CONTROL_UNIT_OUTPUT_REGWRITE,LOW);
+           delay(1000);
+         }
+         
+//         digitalWrite(IMMEDIATE_OUTPUT,LOW);
 
           if(opCode==5){
-              Serial.println("aaaaaaaaaaaaaaaaaaaa");
+            digitalWrite(IM_OUTPUT_8,highLowMap[(iMData[programCounter]>>4)&1]);
+            digitalWrite(IM_OUTPUT_9,highLowMap[(iMData[programCounter]>>5)&1]);
+            digitalWrite(IM_OUTPUT_10,highLowMap[(iMData[programCounter]>>6)&1]);
+            digitalWrite(IM_OUTPUT_11,highLowMap[(iMData[programCounter]>>7)&1]);
+
+            
+            delay(200);              
+
+            
               digitalWrite(CONTROL_UNIT_OUTPUT_MEMWRITE,HIGH);
               delay(100);
               digitalWrite(CONTROL_UNIT_OUTPUT_MEMWRITE,LOW);
           }
+          if(opCode==8){
+            delay(500);
+            digitalWrite(CONTROL_UNIT_OUTPUT_MEMREAD,HIGH);
+            delay(100);
+            digitalWrite(CONTROL_UNIT_OUTPUT_MEMREAD,LOW);
+          }
+
+           digitalWrite(IMMEDIATE_OUTPUT,LOW);
+          }
 
 
-          Serial.println("ALU Input A : "+String(aluInA));
-          Serial.println("ALU Input B : "+String(aluInB));
-          Serial.println("ALU Result : "+String(aluResult));
+          
        }
 
     
     
     
   }
+ 
+  
 }
