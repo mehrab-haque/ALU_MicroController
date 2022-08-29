@@ -353,6 +353,7 @@ void loop() {
             switch(aluOp){
               case 0:
                 aluResult=aluInA+aluInB;
+                aluResult=calculate4BitSignedBinary(aluResult&1,(aluResult>>1)&1,(aluResult>>2)&1,(aluResult>>3)&1);
                 break;
               case 1:
                 aluResult=aluInA-aluInB;
@@ -381,10 +382,14 @@ void loop() {
           digitalWrite(ALU_CONTROL_UNIT_OUTPUT_3,highLowMap[(aluResult&8)>>3]);
           digitalWrite(ALU_CONTROL_UNIT_OUTPUT_ZERO,highLowMap[aluResult==0]);
 
-         delay(200);
+         delay(100);
+          if(opCode==5 || opCode==7 || opCode==8 || opCode==10 || opCode==11 || opCode==12 || opCode==14 || opCode==15)
+            digitalWrite(IMMEDIATE_OUTPUT,HIGH);
+         delay(100);
          digitalWrite(CONTROL_UNIT_OUTPUT_REGWRITE,HIGH);
-         delay(200);
+         delay(100);
          digitalWrite(CONTROL_UNIT_OUTPUT_REGWRITE,LOW);
+         delay(100);
          digitalWrite(IMMEDIATE_OUTPUT,LOW);
 
           if(opCode==5){
