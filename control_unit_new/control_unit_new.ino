@@ -10,7 +10,7 @@ int programCounter=-1;
 
 
 
-unsigned int iMData[256]={0xbf93,0x7fae,0x19a8,0x29ab,0xd8ac,0x5a93,0xaaa1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+unsigned int iMData[256]={0xbf93,0x7fae,0x19a8,0x29ab,0xd8ac,0x5a93,0xaaa1,0x4ab1,0x61c0,0xfbb1,0x8aa4,0x5d90,0xbddf,0x5da0,0xbddf,0x6190,0x08a8,0xeca1,0xc995,0xbdd1,0x8da0,0x9ac9,0xbdd1,0x8d90,0x61c0,0x48a1,0x6100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 
 
@@ -392,7 +392,15 @@ void loop() {
           
           aluResult=calculate4BitSignedBinary(aluResult&1,(aluResult>>1)&1,(aluResult>>2)&1,(aluResult>>3)&1);
 
-          Serial.println("ALU Input A : "+String(aluInA));
+          if((opCode==4 && aluResult==0) || (opCode==3 && aluResult!=0)){
+               int relLoc=calculate4BitSignedBinary(iMData[programCounter]&1,((iMData[programCounter]>>1)&1),((iMData[programCounter]>>2)&1),((iMData[programCounter]>>3)&1));
+               programCounter+=relLoc+1;
+               programState++;
+               
+          }
+         
+          else if (opCode!=4 && opCode!=3){
+            Serial.println("ALU Input A : "+String(aluInA));
           Serial.println("ALU Input B : "+String(aluInB));
           Serial.println("ALU Result : "+String(aluResult));
 
@@ -438,6 +446,7 @@ void loop() {
           }
 
            digitalWrite(IMMEDIATE_OUTPUT,LOW);
+          }
 
 
           
@@ -447,5 +456,6 @@ void loop() {
     
     
   }
+ 
   
 }
