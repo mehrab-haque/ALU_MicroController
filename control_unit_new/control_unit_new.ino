@@ -6,9 +6,10 @@ int delayMs=500;
 
 
 int programCounter=-1;
-unsigned int iMData[256]={0xbf93,0x7fae,0x19a8,0x29ab,0xd8ac,0x5a93,0xaaa1,0x4ab1,0x6020,0xfbb1,0x8aa4,0x5d90,0xbddf,0x5da0,0xbddf,0x6190,0x08a8,0xeca1,0xc995,0xbdd1,0x8da0,0x9ac9,0xbdd1,0x8d90,0x61c0,0x48a1,0x6100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+//unsigned int iMData[256]={0xbfc1,0xbfc2,0xbfc2,0xbf92,0xbfa4,0x59a3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 
+unsigned int iMData[256]={0xbfc1,0xbfb5,0x1bca,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 //Instruction memory output
 #define IM_OUTPUT_0 34
 #define IM_OUTPUT_1 35
@@ -58,6 +59,9 @@ unsigned int iMData[256]={0xbf93,0x7fae,0x19a8,0x29ab,0xd8ac,0x5a93,0xaaa1,0x4ab
 #define CONTROL_UNIT_OUTPUT_BEQ 15
 #define CONTROL_UNIT_OUTPUT_JUMP 16
 
+#define IMMEDIATE_OUTPUT 53
+
+
 //jump analog input
 #define JUMP_INPUT_EN 12
 
@@ -69,6 +73,29 @@ unsigned int iMData[256]={0xbf93,0x7fae,0x19a8,0x29ab,0xd8ac,0x5a93,0xaaa1,0x4ab
 #define JUMP_INPUT_ADDRESS_5 9
 #define JUMP_INPUT_ADDRESS_6 10
 #define JUMP_INPUT_ADDRESS_7 11
+
+
+
+//Alu Control unit IO
+//Input
+#define ALU_CONTROL_UNIT_INPUT_A_0 17
+#define ALU_CONTROL_UNIT_INPUT_A_1 18
+#define ALU_CONTROL_UNIT_INPUT_A_2 19
+#define ALU_CONTROL_UNIT_INPUT_A_3 20
+#define ALU_CONTROL_UNIT_INPUT_B_0 21
+#define ALU_CONTROL_UNIT_INPUT_B_1 22
+#define ALU_CONTROL_UNIT_INPUT_B_2 23
+#define ALU_CONTROL_UNIT_INPUT_B_3 24
+#define ALU_CONTROL_UNIT_INPUT_ALUOP_0 13
+#define ALU_CONTROL_UNIT_INPUT_ALUOP_1 14
+#define ALU_CONTROL_UNIT_INPUT_ALUOP_2 15
+//Output
+#define ALU_CONTROL_UNIT_OUTPUT_0 28
+#define ALU_CONTROL_UNIT_OUTPUT_1 29
+#define ALU_CONTROL_UNIT_OUTPUT_2 30
+#define ALU_CONTROL_UNIT_OUTPUT_3 31
+#define ALU_CONTROL_UNIT_OUTPUT_OVERFLOW 32
+#define ALU_CONTROL_UNIT_OUTPUT_ZERO 33
 
 
 
@@ -153,10 +180,12 @@ int analogHighLowMap[2]={
 int calculate4BitSignedBinary(int i0,int i1,int i2,int i3){
   int number;
   number=i0*1+i1*2+i2*4+i3*8;
+  
   if(i3==0){
     return number;
   }
   number=16-number;
+ 
   return -number;
 }
 
@@ -183,6 +212,8 @@ void setup() {
     pinMode(IM_OUTPUT_14, OUTPUT);
     pinMode(IM_OUTPUT_15, OUTPUT);
 
+    pinMode(IMMEDIATE_OUTPUT, OUTPUT);
+
 
  
   //Main Control Unit Outputs
@@ -198,6 +229,24 @@ void setup() {
   pinMode(CONTROL_UNIT_OUTPUT_REGWRITE, OUTPUT);
   pinMode(CONTROL_UNIT_OUTPUT_BEQ, OUTPUT);
   pinMode(CONTROL_UNIT_OUTPUT_JUMP, OUTPUT);
+
+  //ALU COntrol Unit Inputs
+  pinMode(ALU_CONTROL_UNIT_INPUT_A_0, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_A_1, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_A_2, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_A_3, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_B_0, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_B_1, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_B_2, INPUT);
+  pinMode(ALU_CONTROL_UNIT_INPUT_B_3, INPUT);
+  
+  //Outputs
+   pinMode(ALU_CONTROL_UNIT_OUTPUT_0, OUTPUT);
+   pinMode(ALU_CONTROL_UNIT_OUTPUT_1, OUTPUT);
+   pinMode(ALU_CONTROL_UNIT_OUTPUT_2, OUTPUT);
+   pinMode(ALU_CONTROL_UNIT_OUTPUT_3, OUTPUT);
+   pinMode(ALU_CONTROL_UNIT_OUTPUT_OVERFLOW, OUTPUT);
+   pinMode(ALU_CONTROL_UNIT_OUTPUT_ZERO, OUTPUT);
 
   Serial.begin(9600);
 
@@ -234,7 +283,7 @@ void loop() {
       mask=mask<<1;
     }
 
-    delay(10);
+    delay(100);
 
     //main control unit
     //Read Main Control Unit Input
@@ -243,10 +292,14 @@ void loop() {
       int opCode_2=analogRead(CONTROL_UNIT_INPUT_OPCODE_2)>500?1:0;
       int opCode_3=analogRead(CONTROL_UNIT_INPUT_OPCODE_3)>500?1:0;
       int opCode=opCode_0+opCode_1*2+opCode_2*4+opCode_3*8;
-      
-      for(int i=0;i<12;i++)
-        digitalWrite(opCodeOutputPins[i],highLowMap[opcodeMap[opCode][i]]);
 
+      
+
+      
+      for(int i=0;i<12;i++){
+        if(i!=CONTROL_UNIT_OUTPUT_MEMWRITE && i!=CONTROL_UNIT_OUTPUT_REGWRITE)digitalWrite(opCodeOutputPins[i],highLowMap[opcodeMap[opCode][i]]);
+        else digitalWrite(opCodeOutputPins[i],LOW);
+      }
       delay(10);
 
       int isJump=analogRead(JUMP_INPUT_EN)>500?1:0;
@@ -262,8 +315,91 @@ void loop() {
 
         int jump_address=jmp_address_0+jmp_address_1*2+jmp_address_2*4+jmp_address_3*8+jmp_address_4*16+jmp_address_5*32+jmp_address_6*64+jmp_address_7*128;
         Serial.println("jump to : "+String(jump_address));
-        programCounter=jump_address;      
+        programCounter=jump_address;
+        programState++;
+        
        }
+       else{ 
+          //alu operatrions
+          delay(100);
+          //Read ALU Control Unit Input
+          int aluInA0=digitalRead(ALU_CONTROL_UNIT_INPUT_A_0);
+          int aluInA1=digitalRead(ALU_CONTROL_UNIT_INPUT_A_1);
+          int aluInA2=digitalRead(ALU_CONTROL_UNIT_INPUT_A_2);
+          int aluInA3=digitalRead(ALU_CONTROL_UNIT_INPUT_A_3);
+          int aluInA=calculate4BitSignedBinary(aluInA0,aluInA1,aluInA2,aluInA3);
+
+          int aluInB;
+
+          Serial.println("Opcode : "+String(opCode));
+
+          if(opCode==5 || opCode==7 || opCode==8 || opCode==10 || opCode==11 || opCode==12 || opCode==14 || opCode==15)
+            aluInB=calculate4BitSignedBinary(iMData[programCounter]&1,((iMData[programCounter]>>1)&1),((iMData[programCounter]>>2)&1),((iMData[programCounter]>>3)&1));
+          else{
+            int aluInB0=digitalRead(ALU_CONTROL_UNIT_INPUT_B_0);
+            int aluInB1=digitalRead(ALU_CONTROL_UNIT_INPUT_B_1);
+            int aluInB2=digitalRead(ALU_CONTROL_UNIT_INPUT_B_2);
+            int aluInB3=digitalRead(ALU_CONTROL_UNIT_INPUT_B_3);
+            aluInB=calculate4BitSignedBinary(aluInB0,aluInB1,aluInB2,aluInB3);
+          }
+  
+
+          int aluOp_0=analogRead(ALU_CONTROL_UNIT_INPUT_ALUOP_0)>500?1:0;
+          int aluOp_1=analogRead(ALU_CONTROL_UNIT_INPUT_ALUOP_1)>500?1:0;
+          int aluOp_2=analogRead(ALU_CONTROL_UNIT_INPUT_ALUOP_2)>500?1:0;
+          int aluOp=aluOp_0+aluOp_1*2+aluOp_2*4;
+
+          int aluResult;
+            switch(aluOp){
+              case 0:
+                aluResult=aluInA+aluInB;
+                break;
+              case 1:
+                aluResult=aluInA-aluInB;
+                break;
+              case 2:
+                aluResult=aluInA&aluInB;
+                break;
+              case 3:
+                aluResult=aluInA|aluInB;
+                break;
+              case 4:
+                aluResult=~(aluInA|aluInB);
+                break;
+              case 5:
+                aluResult=aluInA<<aluInB;
+                break;
+              case 6:
+                aluResult=aluInA>>aluInB;
+                break;
+              default:
+                aluResult=0;
+            }
+          digitalWrite(ALU_CONTROL_UNIT_OUTPUT_0,highLowMap[aluResult&1]);
+          digitalWrite(ALU_CONTROL_UNIT_OUTPUT_1,highLowMap[(aluResult&2)>>1]);
+          digitalWrite(ALU_CONTROL_UNIT_OUTPUT_2,highLowMap[(aluResult&4)>>2]);
+          digitalWrite(ALU_CONTROL_UNIT_OUTPUT_3,highLowMap[(aluResult&8)>>3]);
+          digitalWrite(ALU_CONTROL_UNIT_OUTPUT_ZERO,highLowMap[aluResult==0]);
+
+         delay(200);
+         digitalWrite(CONTROL_UNIT_OUTPUT_REGWRITE,HIGH);
+         delay(200);
+         digitalWrite(CONTROL_UNIT_OUTPUT_REGWRITE,LOW);
+         digitalWrite(IMMEDIATE_OUTPUT,LOW);
+
+          if(opCode==5){
+              Serial.println("aaaaaaaaaaaaaaaaaaaa");
+              digitalWrite(CONTROL_UNIT_OUTPUT_MEMWRITE,HIGH);
+              delay(100);
+              digitalWrite(CONTROL_UNIT_OUTPUT_MEMWRITE,LOW);
+          }
+
+
+          Serial.println("ALU Input A : "+String(aluInA));
+          Serial.println("ALU Input B : "+String(aluInB));
+          Serial.println("ALU Result : "+String(aluResult));
+       }
+
     
     
     
