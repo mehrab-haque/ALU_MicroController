@@ -92,6 +92,8 @@ int regBOutputPins[4]={
   REG_OUTPUT_READ_B_3
 };
 
+int prevWriteStatus=false;
+
 int writeDelay=250;
 
 
@@ -188,7 +190,8 @@ void loop() {
     mask=mask<<1;
   }
 
-  if(isWriteMode){
+  if(isWriteMode && prevWriteStatus!=isWriteMode){
+    prevWriteStatus=1;
     delay(writeDelay);
     int writeLoc=digitalRead(REG_INPUT_WRITE_REG_0)+digitalRead(REG_INPUT_WRITE_REG_1)*2+digitalRead(REG_INPUT_WRITE_REG_2)*4+digitalRead(REG_INPUT_WRITE_REG_3)*8;
     int writeData_0=analogRead(REG_INPUT_WRITE_DATA_0)>500?1:0;
@@ -202,16 +205,24 @@ void loop() {
     Serial.print(writeLoc);
     Serial.print( " data ");
     Serial.println(writeData);
-  }
-  else if(isClearMode){
+
+
+    String out="";
+    for(int i=0;i<16;i++)
+      out+=String(regMem[i])+",";
+     Serial.println(out);
+    }
+    else if(!isWriteMode){
+      prevWriteStatus=0;
+    }
+
+   
+ if(isClearMode){
     for(int i=0;i<16;i++)
       regMem[i]=0;
     regMem[13]=15;
   }
 
-  String out="";
-  for(int i=0;i<16;i++)
-    out+=String(regMem[i])+",";
 
   //Serial.println(out);
 
