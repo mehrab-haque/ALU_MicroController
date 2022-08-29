@@ -197,6 +197,10 @@ void loop() {
     int address=digitalRead(DATA_MEMORY_INPUT_ADDRESS_0)+digitalRead(DATA_MEMORY_INPUT_ADDRESS_1)*2+digitalRead(DATA_MEMORY_INPUT_ADDRESS_2)*4+digitalRead(DATA_MEMORY_INPUT_ADDRESS_3)*8+digitalRead(DATA_MEMORY_INPUT_ADDRESS_4)*16+digitalRead(DATA_MEMORY_INPUT_ADDRESS_5)*32+digitalRead(DATA_MEMORY_INPUT_ADDRESS_6)*64+digitalRead(DATA_MEMORY_INPUT_ADDRESS_7)*128;
     int data=calculate4BitSignedBinary(digitalRead(DATA_MEMORY_INPUT_WRITE_DATA_0),digitalRead(DATA_MEMORY_INPUT_WRITE_DATA_1),digitalRead(DATA_MEMORY_INPUT_WRITE_DATA_2),digitalRead(DATA_MEMORY_INPUT_WRITE_DATA_3));
     dataMemory[address]=data;
+    Serial.print("INSIDE WRITEMODE, add. " );
+    Serial.print(address);
+    Serial.print( " data ");
+    Serial.println(data);
   }
   else if(isClearMode){
     for(int i=0;i<256;i++)
